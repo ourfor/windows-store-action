@@ -1,5 +1,5 @@
-name: 'Windows Store Publish'
-author: 'Isaac Levin'
+name: 'Microsoft Store Publish'
+author: 'ourfor'
 description: 'Greet someone and record the time'
 inputs:
   tenant-id:
