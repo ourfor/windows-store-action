@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node-dev --respawn src/publish.ts",
+    "package": "node esbuild.js",
     "publish": "node --trace-warnings -r ts-node/register -r tsconfig-paths/register src/publish.ts"
   },
   "repository": {
@@ -40,6 +41,7 @@
     "@types/request": "^2.48.8",
     "@types/uuid": "^8.3.0",
     "del": "^2.2.2",
+    "esbuild": "^0.25.2",
     "node-notifier": "^9.0.1",
     "shelljs": "^0.7.3",
     "ts-node": "^8.6.2",
