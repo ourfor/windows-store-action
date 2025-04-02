@@ -38,6 +38,10 @@ inputs:
     description: 'Update Package Images'
     required: false
     default: 'false'
+  flight-id:
+    description: 'Flight id to use for submission'
+    required: false
+    default: ''
 outputs:
   url: # id of output
     description: 'URl to Partner Dashboard'

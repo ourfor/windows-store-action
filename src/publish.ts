@@ -13,6 +13,9 @@ var currentToken: request.AccessToken;
 /** The app ID we are publishing to */
 var appId: string;
 
+/** The flight name to publishing to */
+var flightId: string;
+
 var packages: string[] = [];
 
 /** Expected imageType values */
@@ -82,10 +85,15 @@ export async function publishTask() {
     credentials
   );
   appId = core.getInput("app-id"); // Globally set app ID for future steps.
+  flightId = core.getInput("flight-id");
 
   console.log("Creating submission...");
   var submissionResource = await createAppSubmission();
   var submissionUrl = `https://developer.microsoft.com/en-us/dashboard/apps/${appId}/submissions/${submissionResource.id}`;
+  if (flightId !== "") {
+    console.log(`Adding flight id ${flightId} to submission...`);
+    submissionUrl = `https://developer.microsoft.com/en-us/dashboard/apps/${appId}/flights/${flightId}/submissions/${submissionResource.id}`;
+  }
   console.log(`Submission ${submissionUrl} was created successfully`);
 
   if (core.getInput("delete-packages") === "true") {
@@ -121,6 +129,9 @@ export async function publishTask() {
   } else {
     console.log("Polling submission...");
     var resourceLocation = `applications/${appId}/submissions/${submissionResource.id}`;
+    if (flightId !== "") {
+      resourceLocation = `applications/${appId}/flights/${flightId}/submissions/${submissionResource.id}`;
+    }
     await api.pollSubmissionStatus(
       currentToken,
       resourceLocation,
@@ -138,7 +149,7 @@ export async function publishTask() {
 function createAppSubmission(): Q.Promise<any> {
   return api.createSubmission(
     currentToken,
-    api.ROOT + "applications/" + appId + "/submissions"
+    flightId !== "" ? api.ROOT + "applications/" + appId + "/flights/" + flightId + "/submissions" : api.ROOT + "applications/" + appId + "/submissions",
   );
 }
 
@@ -206,14 +217,13 @@ function addImagesToZipFromListing(
  * @return A promise for the commit of the submission
  */
 function commitAppSubmission(submissionId: string): Q.Promise<void> {
+  let submissionLocation = `applications/${appId}/submissions/${submissionId}/commit`;
+  if (flightId !== "") {
+    submissionLocation = `applications/${appId}/flights/${flightId}/submissions/${submissionId}/commit`;
+  }
   return api.commitSubmission(
     currentToken,
-    api.ROOT +
-      "applications/" +
-      appId +
-      "/submissions/" +
-      submissionId +
-      "/commit"
+    api.ROOT + submissionLocation
   );
 }
 
@@ -239,6 +249,10 @@ function putMetadata(submissionResource: any): Q.Promise<void> {
     appId +
     "/submissions/" +
     submissionResource.id;
+
+  if (flightId !== "") {
+    url = api.ROOT + "applications/" + appId + "/flights/" + flightId + "/submissions/" + submissionResource.id;
+  }
 
   return api.putSubmission(currentToken, url, submissionResource);
 }
