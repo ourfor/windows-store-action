@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/isaacrlevin/windows-store-action.git"
+    "url": "git+https://github.com/ourfor/windows-store-action.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/isaacrlevin/windows-store-action/issues"
+    "url": "https://github.com/ourfor/windows-store-action/issues"
   },
-  "homepage": "https://github.com/isaacrlevin/windows-store-action#readme",
+  "homepage": "https://github.com/ourfor/windows-store-action#readme",
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^4.0.0",
