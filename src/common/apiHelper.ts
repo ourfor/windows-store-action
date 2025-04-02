@@ -186,7 +186,7 @@ export function pollSubmissionStatus(
   resourceLocation: string,
   publishMode: string
 ): Q.Promise<void> {
-  const POLL_DELAY = 300000; // Delay 5 minutes between poll requests
+  const POLL_DELAY = 2 * 60 * 1000; // Delay 2 minutes between poll requests
   var submissionCheckGenerator = () =>
     checkSubmissionStatus(token, resourceLocation, publishMode);
   return request

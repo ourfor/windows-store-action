@@ -1,6 +1,5 @@
 ﻿require("dotenv").config();
 import core from "@actions/core";
-
 import fs = require("fs");
 import path = require("path");
 import api = require("./common/apiHelper");
@@ -99,7 +98,7 @@ export async function publishTask() {
   if (core.getInput("delete-packages") === "true") {
     console.log("Deleting old packages...");
     api.deleteOldPackages(
-      submissionResource.applicationPackages,
+      flightId !== "" ? submissionResource.flightPackages : submissionResource.applicationPackages,
       +core.getInput("packages-keep")
     );
   }
@@ -240,7 +239,7 @@ function putMetadata(submissionResource: any): Q.Promise<void> {
   // Also at this point add the given packages to the list of packages to upload.
   api.includePackagesInSubmission(
     packages,
-    submissionResource.applicationPackages
+    flightId !== "" ? submissionResource.flightPackages : submissionResource.applicationPackages,
   );
 
   var url =
